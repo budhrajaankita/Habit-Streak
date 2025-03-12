@@ -4,11 +4,10 @@ from sqlalchemy.orm import sessionmaker
 import os
 from datetime import datetime
 
-# Get database URL from environment or use SQLite by default
-DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///habits.db")
+engine = create_engine('sqlite:///db.sqlite3')
+Session = sessionmaker(bind=engine)
+Base = declarative_base()
 
-# Create database engine
-engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 # Create declarative base
