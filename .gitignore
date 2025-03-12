@@ -1,1 +1,4 @@
-habit
+habit/
+habits.db
+__pycache__/
+
