@@ -1,24 +1,53 @@
 from datetime import datetime
 import os
 from sqlalchemy.orm import Session
-from sqlalchemy import func, Column, Integer, String, DateTime, ForeignKey
-from database import get_db, Base, engine
+from sqlalchemy import func, Column, Integer, String, DateTime, ForeignKey, create_engine, text, inspect
+from database import Habit, get_db, Base, engine
 from typing import Generator, Optional, List, Dict, Any
 import functools
 
-# Update Habit model to include user_id
-class Habit(Base):
-    __tablename__ = "habits"
+# class Habit(Base):
+#     __tablename__ = "habits"
+#     __table_args__ = {'extend_existing': True}
+
     
-    id = Column(Integer, primary_key=True, index=True)
-    user_id = Column(Integer, ForeignKey("users.id"))
-    habit_name = Column(String, index=True)
-    created_date = Column(DateTime, default=datetime.now)
-    target_frequency = Column(String)
-    check_ins = Column(String, default="")
+#     id = Column(Integer, primary_key=True, index=True)
+#     user_id = Column(Integer)
+#     habit_name = Column(String, index=True)
+#     created_date = Column(DateTime, default=datetime.now)
+#     target_frequency = Column(String)
+#     check_ins = Column(String, default="")
 
 # Create tables if they don't exist
 Base.metadata.create_all(bind=engine)
+
+
+def add_user_id_column():
+    engine = create_engine('sqlite:///habits.db')
+    
+    # First, ensure the table exists
+    Base.metadata.create_all(bind=engine)
+    
+    # Then check if column exists
+    inspector = inspect(engine)
+    try:
+        columns = [c['name'] for c in inspector.get_columns('habits')]
+        
+        if 'user_id' not in columns:
+            try:
+                with engine.connect() as conn:
+                    conn.execute(text("ALTER TABLE habits ADD COLUMN user_id INTEGER"))
+                    conn.commit()
+                    print("Added user_id column to habits table")
+            except Exception as e:
+                print(f"Error adding user_id column: {e}")
+    except Exception as e:
+        print(f"Error inspecting table: {e}")
+
+
+
+add_user_id_column()
+
 
 class HabitTracker:
     def __init__(self, user_id: Optional[int] = None):
@@ -28,6 +57,27 @@ class HabitTracker:
         self._last_cache_update = None
         self.user_id = user_id
 
+    @staticmethod
+    def add_user_id_column():
+        engine = create_engine('sqlite:///habits.db')
+        
+        Base.metadata.create_all(bind=engine)
+        
+        inspector = inspect(engine)
+        try:
+            columns = [c['name'] for c in inspector.get_columns('habits')]
+            
+            if 'user_id' not in columns:
+                try:
+                    with engine.connect() as conn:
+                        conn.execute(text("ALTER TABLE habits ADD COLUMN user_id INTEGER"))
+                        conn.commit()
+                        print("Added user_id column to habits table")
+                except Exception as e:
+                    print(f"Error adding user_id column: {e}")
+        except Exception as e:
+            print(f"Error inspecting table: {e}")
+            
     def _get_habit(self, habit_name: str):
         """Get habit with caching"""
         cache_key = f"{self.user_id}_{habit_name}"
@@ -147,3 +197,4 @@ class HabitTracker:
         days_since_creation = (datetime.now().date() - created_date).days + 1
 
         return len(set(check_ins)) / days_since_creation * 100
+    

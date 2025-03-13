@@ -89,7 +89,6 @@ def create_streak_chart(habits_data, combined=True, habit_name=None, color_theme
         if not pd.isna(habit['check_ins']) and habit['check_ins']:
             all_check_ins.extend(habit['check_ins'].split(','))
     
-    # Create a grid-like representation (7×53 grid: 7 days per week, 53 weeks)
     z_data = np.zeros((7, 53))  # 7 days (rows) x 53 weeks (columns)
     text_data = np.empty((7, 53), dtype='object')  # For hover text
     
