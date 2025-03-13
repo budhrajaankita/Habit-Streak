@@ -41,7 +41,7 @@ def create_streak_chart(habits_data, combined=True, habit_name=None, color_theme
     
     # Define color schemes
     color_schemes = {
-        "green": [  # GitHub's default green theme
+        "green": [  #  green theme
             [0, colors['secondary']],  # No contributions
             [0.25, '#9be9a8'],         # Light green
             [0.5, '#40c463'],          # Medium green
