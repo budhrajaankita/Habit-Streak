@@ -179,12 +179,12 @@ def register():
 
 # Logout callback
 def logout():
-    if st.session_state.authenticated and st.session_state.user_id:
-        db = next(get_db())
-        user = db.query(User).filter(User.id == st.session_state.user_id).first()
-        if user:
-            logout_user(db, user)
-    
+    # if st.session_state.authenticated and st.session_state.user_id:
+    #     db = next(get_db())
+    user = db.query(User).filter(User.id == st.session_state.user_id).first()
+    if user:
+        logout_user(db, user)
+
     # Clear session
     st.session_state.authenticated = False
     st.session_state.user_id = None
@@ -481,8 +481,10 @@ elif st.session_state.current_page == "dashboard" and st.session_state.authentic
                 # Get the habit name and look up its icon
                 habit_name = habit['habit_name']
                 habit_icon = HABIT_TYPES.get(habit_name, {"icon": "✨"})["icon"]
+
+                
                 with st.expander(f"{habit_icon} {habit_name} (Streak: {habit['streak']} days)"):
-                    col_a, col_b, col_c = st.columns([0.8, 1, 1])  # Made check-in column slightly smaller
+                    col_a, col_b, col_c = st.columns([0.8, 1, 1]) 
 
                     with col_a:
                         if st.button("✅ Check-in", key=f"checkin_{habit_name}"):

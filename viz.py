@@ -13,14 +13,13 @@ def get_theme_colors():
     return {
         'background': '#1E1E1E' if is_dark else '#FFFFFF',
         'text': '#FFFFFF' if is_dark else '#1E1E1E',
-        'primary': '#FF4B4B',  # Restore original pinkish-orange color
+        'primary': '#FF4B4B',
         'secondary': 'rgba(255,255,255,0.1)' if is_dark else 'rgba(0,0,0,0.1)',
         'grid': 'rgba(255,255,255,0.1)' if is_dark else 'rgba(0,0,0,0.1)'
     }
 
 def create_streak_chart(habits_data, combined=True, habit_name=None, color_theme="green"):
-    """Create a GitHub-style contribution calendar with squares
-    
+    """Create a GitHub-style streak
     Args:
         habits_data: DataFrame containing habit data
         combined: If True, show combined data for all habits, else show individual habit data
@@ -100,7 +99,6 @@ def create_streak_chart(habits_data, combined=True, habit_name=None, color_theme
     # Max value for color scaling
     max_count = max(check_in_counts.values()) if check_in_counts else 1
     
-    # Fill the matrix
     current_date = start_date
     for week in range(53):
         for day in range(7):
@@ -111,7 +109,6 @@ def create_streak_chart(habits_data, combined=True, habit_name=None, color_theme
             weekday = current_date.weekday()  # Monday=0, Sunday=6
             date_str = current_date.strftime('%Y-%m-%d')
             
-            # GitHub uses Sunday as first day (0), we need to adjust
             weekday = (weekday + 1) % 7  # Now Sunday=0, Saturday=6
             
             # Fill cell with count / max_count for color intensity
@@ -119,7 +116,7 @@ def create_streak_chart(habits_data, combined=True, habit_name=None, color_theme
             intensity = count / max_count if max_count > 0 else 0
             z_data[weekday, week] = intensity
             
-            # Store date for hover text
+            #  hover text
             text_data[weekday, week] = f"{date_str}: {count} check-ins"
             
             current_date += timedelta(days=1)
@@ -133,7 +130,7 @@ def create_streak_chart(habits_data, combined=True, habit_name=None, color_theme
         showscale=False,
         hoverongaps=False,
         text=text_data,
-        hoverinfo='text',
+        hoverinfo='skip',
         xgap=3,  # Gap between cells
         ygap=3   # Gap between cells
     )
@@ -172,7 +169,7 @@ def create_streak_chart(habits_data, combined=True, habit_name=None, color_theme
         xaxis=dict(
             showgrid=False,
             zeroline=False,
-            showticklabels=False,  # Hide week numbers
+            showticklabels=False,
             side='top'
         ),
         yaxis=dict(
@@ -181,7 +178,7 @@ def create_streak_chart(habits_data, combined=True, habit_name=None, color_theme
             ticktext=['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
             tickvals=list(range(7)),
             tickfont=dict(size=10, color=colors['text']),
-            autorange="reversed"  # To match GitHub's orientation (Sun at top)
+            autorange="reversed"
         ),
     )
     
