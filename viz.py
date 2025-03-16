@@ -166,11 +166,15 @@ def create_streak_chart(habits_data, combined=True, habit_name=None, color_theme
         plot_bgcolor='rgba(0,0,0,0)',
         height=220,
         margin=dict(l=10, r=10, t=50, b=10),
+        dragmode=False,
+        hovermode=False,
+        autosize=False,
         xaxis=dict(
             showgrid=False,
             zeroline=False,
             showticklabels=False,
-            side='top'
+            side='top',
+            fixedrange=True
         ),
         yaxis=dict(
             showgrid=False,
@@ -178,7 +182,8 @@ def create_streak_chart(habits_data, combined=True, habit_name=None, color_theme
             ticktext=['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
             tickvals=list(range(7)),
             tickfont=dict(size=10, color=colors['text']),
-            autorange="reversed"
+            autorange="reversed",
+            fixedrange=True
         ),
     )
     

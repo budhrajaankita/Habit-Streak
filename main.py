@@ -230,69 +230,56 @@ st.markdown("""
             margin-right: auto !important;
             text-align: center !important;
         }
-        
+/* Base dark theme for all elements */
+body, .stApp, div, span, p, h1, h2, h3, h4, h5, h6, header, footer, section, article, aside {
+    background-color: #0E1117 !important;
+    color: #FFFFFF !important;
+}
+
+/* Specific Streamlit elements */
 .stApp {
-    background-color: #0E1117;
-    color: #FFFFFF;
+    background-color: #0E1117 !important;
 }
 
-.stSidebar {
-    background-color: #262730;
-}
-
-[data-testid="stSidebar"] {
-    background-color: #262730;
+.stSidebar, [data-testid="stSidebar"], .css-1d391kg, div[data-testid="stSidebar"] {
+    background-color: #262730 !important;
 }
 
 .stHeader {
-    background-color: #0E1117;
+    background-color: #0E1117 !important;
 }
 
-h1, h2, h3, h4, h5, h6, p, span, div {
+/* Forms, inputs, buttons */
+input, textarea, select, button, .stButton>button, .stTextInput>div>div>input, .stSelectbox>div>div>select {
+    background-color: #262730 !important;
     color: #FFFFFF !important;
+    border-color: #4E5969 !important;
 }
 
-.stSelectbox > div, .stNumberInput > div {
+/* All selectboxes, textboxes, and number inputs */
+.stSelectbox > div, .stNumberInput > div, .stTextInput > div {
     background-color: #262730 !important;
     color: #FFFFFF !important;
 }
 
-div[data-baseweb="select"] * {
+div[data-baseweb="select"] *, div[data-baseweb="select"] {
     background-color: #262730 !important;
     color: #FFFFFF !important;
 }
 
-div[data-baseweb="input"] * {
+div[data-baseweb="input"] *, div[data-baseweb="input"] {
     background-color: #262730 !important;
     color: #FFFFFF !important;
 }
 
-button {
-    background-color: #262730 !important;
-    color: #FFFFFF !important;
-    align: center;
-}
-
-.stMarkdown, .stMarkdown * {
-    color: #FFFFFF !important;
-}
-
-.css-145kmo2 {
-    color: #FFFFFF !important;
-}
-
-/* Fix for plotly elements */
-.js-plotly-plot .plotly, .js-plotly-plot .plotly * {
-    color: #FFFFFF !important;
-}
-
+/* Metrics and expanders */
 .stExpander {
-    background-color: #262730 !important;
+    # background-color: #262730 !important;
     border-color: #4E5969 !important;
 }
 
 .stMetric {
-    background-color: #262730 !important;
+    # background-color: #262730 !important;
     color: #FFFFFF !important;
 }
 
@@ -300,9 +287,36 @@ button {
     color: #9CA3AF !important;
 }
 
-/* Style for login/register forms */
+/* Fix for plotly elements */
+.js-plotly-plot .plotly, .js-plotly-plot .plotly * {
+    color: #FFFFFF !important;
+}
+
+/* Force light-colored text */
+* {
+    color: #FFFFFF !important;
+}
+
+/* Mobile-specific overrides */
+@media only screen and (max-width: 768px) {
+    body, .stApp, .st-emotion-cache-uf99v8 {
+        background-color: #0E1117 !important;
+    }
+    
+    /* Target wrapper elements that might appear on mobile */
+    .st-emotion-cache-1y4p8pa {
+        background-color: #0E1117 !important;
+    }
+    
+    /* Force dark mode on all elements */
+    div, section, main, aside, article {
+        background-color: #0E1117 !important;
+    }
+}
+
+/* Auth form styles */
 .auth-form {
-    background-color: #262730;
+    background-color: #262730 !important;
     padding: 2rem;
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
